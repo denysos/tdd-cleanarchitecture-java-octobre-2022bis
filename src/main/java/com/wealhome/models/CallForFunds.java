@@ -39,20 +39,4 @@ public class CallForFunds {
     public int hashCode() {
         return Objects.hash(id, condominiumId, amount, quarter);
     }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public UUID getCondominiumId() {
-        return condominiumId;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public int getQuarter() {
-        return quarter;
-    }
 }
