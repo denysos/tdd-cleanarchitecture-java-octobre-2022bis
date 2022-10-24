@@ -45,6 +45,17 @@ public class CallForFunds {
         return Objects.hash(id, condominiumId, amount, quarter, occurredOn);
     }
 
+    @Override
+    public String toString() {
+        return "CallForFunds{" +
+                "id=" + id +
+                ", condominiumId=" + condominiumId +
+                ", amount=" + amount +
+                ", quarter=" + quarter +
+                ", occurredOn=" + occurredOn +
+                '}';
+    }
+
     public UUID getId() {
         return id;
     }

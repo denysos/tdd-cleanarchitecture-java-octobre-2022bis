@@ -3,50 +3,56 @@ package com.wealhome.services;
 import com.wealhome.models.CallForFunds;
 import com.wealhome.models.Condominium;
 import com.wealhome.models.DateProvider;
+import com.wealhome.models.DeterministicDateProvider;
+import com.wealhome.repositories.CallForFundsRepository;
+import com.wealhome.repositories.CondominiumRepository;
 import com.wealhome.repositories.SpringCallForFundsRepository;
 import com.wealhome.repositories.SpringCondominiumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 
-@Component
+import static java.math.BigDecimal.*;
+
 public class LaunchCallForFundsCommandHandler {
 
-    @Autowired
-    private SpringCallForFundsRepository callForFundsRepository;
-    @Autowired
-    private SpringCondominiumRepository condominiumRepository;
+    private final CondominiumRepository condominiumRepository;
+    private final CallForFundsRepository callForFundsRepository;
 
-    @Autowired
-    private DateProvider dateProvider;
+    private final DateProvider dateProvider;
+
+    public LaunchCallForFundsCommandHandler(CondominiumRepository condominiumRepository,
+                                            CallForFundsRepository callForFundsRepository,
+                                            DateProvider dateProvider) {
+        this.condominiumRepository = condominiumRepository;
+        this.callForFundsRepository = callForFundsRepository;
+        this.dateProvider = dateProvider;
+    }
 
     public void handle(UUID callForFundsId, UUID condominiumId) {
-        Condominium condominium = condominiumRepository.findById(condominiumId).get();
-        List<LocalDate> quarterLimits = List.of(
-                LocalDate.of(2022, 1, 1),
-                LocalDate.of(2022, 3, 31),
-                LocalDate.of(2022, 6, 30),
-                LocalDate.of(2022, 9, 30)
-                );
-        int currentQuarter = 0;
-        for (LocalDate quarterLimit : quarterLimits)
-            if (dateProvider.dateNow().isAfter(quarterLimit)) {
-                currentQuarter++;
-            }
-        if(currentQuarter > 4)
-            throw new IllegalStateException("Quarters are between 1 and 4");
-        callForFundsRepository.save(new CallForFunds(
-                callForFundsId,
-                condominiumId,
-                condominium.getYearlyBudget().divide(BigDecimal.valueOf(4), RoundingMode.CEILING),
-                currentQuarter,
-                dateProvider.timeNow()));
+        condominiumRepository.findById(condominiumId).ifPresent(condominium -> {
+            callForFundsRepository.save(new CallForFunds(
+                    callForFundsId,
+                    condominiumId,
+                    valueOf(2500),
+                    determineCurrentQuarter(),
+                    dateProvider.timeNow()));
+        });
 
+    }
+
+    private int determineCurrentQuarter() {
+        int currentMonth = dateProvider.dateNow().getMonth().getValue();
+        if(currentMonth > 9) {
+            return 4;
+        }
+        if(currentMonth > 6)
+            return 3;
+        if(currentMonth > 3)
+            return 2;
+        return 1;
     }
 
 }

@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
-public class CallForFundsControllerIT extends BaseE2E {
+public class CallForFundsControllerITxx extends BaseE2E {
 
     @Autowired
     protected MockMvc mvc;
