@@ -1,4 +1,4 @@
-package com.wealhome.models;
+package com.wealhome.businesslogic.models;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

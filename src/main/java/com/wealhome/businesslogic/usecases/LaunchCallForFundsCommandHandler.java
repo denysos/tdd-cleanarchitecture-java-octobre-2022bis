@@ -1,20 +1,11 @@
-package com.wealhome.services;
+package com.wealhome.businesslogic.usecases;
 
-import com.wealhome.models.CallForFunds;
-import com.wealhome.models.Condominium;
-import com.wealhome.models.DateProvider;
-import com.wealhome.models.DeterministicDateProvider;
-import com.wealhome.repositories.CallForFundsRepository;
-import com.wealhome.repositories.CondominiumRepository;
-import com.wealhome.repositories.SpringCallForFundsRepository;
-import com.wealhome.repositories.SpringCondominiumRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import com.wealhome.businesslogic.models.CallForFunds;
+import com.wealhome.businesslogic.models.DateProvider;
+import com.wealhome.businesslogic.repositories.CallForFundsRepository;
+import com.wealhome.businesslogic.repositories.CondominiumRepository;
 
-import java.math.BigDecimal;
 import java.util.UUID;
-
-import static java.math.BigDecimal.*;
 
 public class LaunchCallForFundsCommandHandler {
 
@@ -36,7 +27,7 @@ public class LaunchCallForFundsCommandHandler {
             callForFundsRepository.save(new CallForFunds(
                     callForFundsId,
                     condominiumId,
-                    valueOf(2500),
+                    condominium.computeCallForFundAmount(),
                     determineCurrentQuarter(),
                     dateProvider.timeNow()));
         });
@@ -45,14 +36,7 @@ public class LaunchCallForFundsCommandHandler {
 
     private int determineCurrentQuarter() {
         int currentMonth = dateProvider.dateNow().getMonth().getValue();
-        if(currentMonth > 9) {
-            return 4;
-        }
-        if(currentMonth > 6)
-            return 3;
-        if(currentMonth > 3)
-            return 2;
-        return 1;
+        return (currentMonth - 1) / 3 + 1;
     }
 
 }

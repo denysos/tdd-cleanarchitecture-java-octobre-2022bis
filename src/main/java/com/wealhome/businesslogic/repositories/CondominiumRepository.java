@@ -1,6 +1,6 @@
-package com.wealhome.repositories;
+package com.wealhome.businesslogic.repositories;
 
-import com.wealhome.models.Condominium;
+import com.wealhome.businesslogic.models.Condominium;
 
 import java.util.Optional;
 import java.util.UUID;

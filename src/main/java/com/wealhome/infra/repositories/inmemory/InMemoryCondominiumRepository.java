@@ -1,6 +1,7 @@
-package com.wealhome.repositories;
+package com.wealhome.infra.repositories.inmemory;
 
-import com.wealhome.models.Condominium;
+import com.wealhome.businesslogic.models.Condominium;
+import com.wealhome.businesslogic.repositories.CondominiumRepository;
 
 import java.util.ArrayList;
 import java.util.List;

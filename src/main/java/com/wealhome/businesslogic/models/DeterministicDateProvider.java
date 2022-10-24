@@ -1,11 +1,8 @@
-package com.wealhome.models;
-
-import org.springframework.stereotype.Component;
+package com.wealhome.businesslogic.models;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Component
 public class DeterministicDateProvider implements DateProvider {
 
     private LocalDateTime timeNow;

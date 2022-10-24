@@ -1,12 +1,11 @@
 package com.wealhome.unit.services;
 
-import com.wealhome.models.CallForFunds;
-import com.wealhome.models.Condominium;
-import com.wealhome.models.DeterministicDateProvider;
-import com.wealhome.repositories.InMemoryCallForFundsRepository;
-import com.wealhome.repositories.InMemoryCondominiumRepository;
-import com.wealhome.services.LaunchCallForFundsCommandHandler;
-import org.junit.jupiter.api.BeforeEach;
+import com.wealhome.businesslogic.models.CallForFunds;
+import com.wealhome.businesslogic.models.Condominium;
+import com.wealhome.businesslogic.models.DeterministicDateProvider;
+import com.wealhome.infra.repositories.inmemory.InMemoryCallForFundsRepository;
+import com.wealhome.infra.repositories.inmemory.InMemoryCondominiumRepository;
+import com.wealhome.businesslogic.usecases.LaunchCallForFundsCommandHandler;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -29,17 +28,20 @@ public class LaunchCallForFundsTest {
     @Nested
     public class ExistingCondominium {
 
-        @BeforeEach
-        void setup() {
-            declareExistingCondominium(10000);
-        }
-
         @Test
-        void shouldLaunchTheFirstCallOfTheFiscalYear() {
+        void shouldLaunchTheCallOfTheCurrentQuarter() {
+            declareExistingCondominium(10000);
             assertCallForFundsLaunched(2020, 1, 2500, 1);
             assertCallForFundsLaunched(2020, 3, 2500, 1);
             assertCallForFundsLaunched(2020, 4, 2500, 2);
             assertCallForFundsLaunched(2021, 7, 2500, 3);
+            assertCallForFundsLaunched(2021, 11, 2500, 4);
+        }
+
+        @Test
+        void shouldLaunchACallExpectingTheFourthOfTheYearlyBudget() {
+            declareExistingCondominium(10403);
+            assertCallForFundsLaunched(2020, 1, 2601, 1);
         }
 
     }
@@ -48,6 +50,7 @@ public class LaunchCallForFundsTest {
                                             int currentMonth,
                                             int expectedAmount,
                                             int expectedQuarter) {
+        callForFundsRepository.clear();
         simulateCurrentDate(fiscalYear, currentMonth);
         launchCallForFunds(callForFundsId, condominiumId);
         _assertCallForFundsLaunched(expectedAmount, expectedQuarter);

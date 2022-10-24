@@ -1,10 +1,9 @@
-package com.wealhome.models;
+package com.wealhome.businesslogic.models;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -43,17 +42,6 @@ public class CallForFunds {
     @Override
     public int hashCode() {
         return Objects.hash(id, condominiumId, amount, quarter, occurredOn);
-    }
-
-    @Override
-    public String toString() {
-        return "CallForFunds{" +
-                "id=" + id +
-                ", condominiumId=" + condominiumId +
-                ", amount=" + amount +
-                ", quarter=" + quarter +
-                ", occurredOn=" + occurredOn +
-                '}';
     }
 
     public UUID getId() {
