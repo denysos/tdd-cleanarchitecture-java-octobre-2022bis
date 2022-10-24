@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,8 +39,8 @@ public class LaunchCallForFundsCommandHandler {
                 callForFundsId,
                 condominiumId,
                 condominium.getYearlyBudget().divide(BigDecimal.valueOf(4), RoundingMode.CEILING),
-                currentQuarter
-        ));
+                currentQuarter,
+                LocalDateTime.now()));
 
     }
 

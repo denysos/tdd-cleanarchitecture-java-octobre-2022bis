@@ -9,7 +9,15 @@ De sorte à récolter l'argent dû par les copropriétaires.
 - Un syndic ne peut pas lancer deux fois un appel de fonds sur le même trimestre.
 - Un syndic ne peut pas lancer d'appel de fonds si la somme définie des tantièmes de chaque copropriétaire n'égale pas le total des tantièmes attendus.
 - Un syndic OFFRE le premier trimestre à un nouveau copropriétaire.
-- En cas d'oubli total d'appel de fonds d'un trimestre donné, il sera automatiquement cumulé lors de l'appel du trimestre suivant (dans deux fichiers distincts)
+- En cas d'oubli total d'appel de fonds d'un trimestre donné, il sera automatiquement cumulé lors de l'appel du trimestre suivant
+(dans deux PDF envoyés à chaque copropriétaire)
+
+
+
+
+
+
+
 
 
 - Un syndic OFFRE le premier trimestre à un nouveau copropriétaire.

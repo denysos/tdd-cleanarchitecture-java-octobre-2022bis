@@ -14,6 +14,7 @@ create table if not exists calls_for_funds
             primary key,
     condominium_id uuid    not null,
     amount         numeric not null,
-    quarter        integer not null
+    quarter        integer not null,
+    occurred_on    timestamp not null
 );
 
