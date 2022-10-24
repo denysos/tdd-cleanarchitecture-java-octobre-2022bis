@@ -1,0 +1,27 @@
+Lancer un appel de fonds par trimestre sur 4 copropriétaires de la copropriété WealHome
+
+US :
+En tant que Syndic,
+Je souhaite lancer l'appel de fond du trimestre courant
+De sorte à récolter l'argent dû par les copropriétaires.
+
+- Un syndic ne peut lancer un appel de fond que lorsque l'on se trouve actuellement dans le trimestre concerné.
+- Un syndic ne peut pas lancer deux fois un appel de fonds sur le même trimestre.
+- Un syndic ne peut pas lancer d'appel de fonds si la somme définie des tantièmes de chaque copropriétaire n'égale pas le total des tantièmes attendus.
+- Un syndic OFFRE le premier trimestre à un nouveau copropriétaire.
+- En cas d'oubli total d'appel de fonds d'un trimestre donné, il sera automatiquement cumulé lors de l'appel du trimestre suivant (dans deux fichiers distincts)
+
+
+- Un syndic OFFRE le premier trimestre à un nouveau copropriétaire.
+=> Si aucun appel de fonds n'a embarqué la copro concernant ce copropriétaire, alors autorisez la ristourne le premier trimestre.
+=> Si au moins un appel de fonds a été réalisé l'année passée embarquant le copropriétaire,
+alors ,n'autorisez PAS la ristourne le premier trimestre de l'année courante.
+
+Annexes :
+Il y a 4 trimestres :
+
+1. 1er Janvier / 31 mars
+2. 1er avril / 30 juin
+3. 1er juillet / 30 septembre
+4. 1er octobre / 31 décembre
+
