@@ -30,8 +30,10 @@ public class LaunchCallForFundsCommandHandler {
         List<LocalDate> quarterLimits = List.of(
                 LocalDate.of(2022, 1, 1),
                 LocalDate.of(2022, 3, 31),
-                LocalDate.of(2022, 6, 30));
-        int currentQuarter = 1;
+                LocalDate.of(2022, 6, 30),
+                LocalDate.of(2022, 9, 30)
+                );
+        int currentQuarter = 0;
         for (LocalDate quarterLimit : quarterLimits)
             if (dateProvider.dateNow().isAfter(quarterLimit)) {
                 currentQuarter++;
