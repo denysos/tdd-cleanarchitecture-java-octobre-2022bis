@@ -33,6 +33,16 @@ public class CallForFunds {
         );
     }
 
+    public static CallForFunds fromSnapshot(CallForFundsStateSnapshot snapshot) {
+        return new CallForFunds(
+                snapshot.id,
+                snapshot.condominiumId,
+                snapshot.amount,
+                snapshot.quarter,
+                snapshot.occurredOn
+        );
+    }
+
     public static class CallForFundsStateSnapshot {
 
         public UUID id;

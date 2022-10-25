@@ -22,6 +22,6 @@ public record JpaCallForFundsRepository(
 
     @Override
     public boolean doSomePastCallForFundsExist() {
-        return false;
+        return springCallForFundsRepository.findAll().size() > 0;
     }
 }
