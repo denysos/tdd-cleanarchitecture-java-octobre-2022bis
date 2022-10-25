@@ -3,6 +3,8 @@ package com.wealhome.unit.services;
 import com.wealhome.businesslogic.models.CallForFunds;
 import com.wealhome.businesslogic.models.Condominium;
 import com.wealhome.businesslogic.models.DeterministicDateProvider;
+import com.wealhome.infra.client.springboot.viewmodels.CallForFundsVM;
+import com.wealhome.businesslogic.usecases.CallForFundsVMPresenter;
 import com.wealhome.infra.repositories.inmemory.InMemoryCallForFundsRepository;
 import com.wealhome.infra.repositories.inmemory.InMemoryCondominiumRepository;
 import com.wealhome.businesslogic.usecases.LaunchCallForFundsCommandHandler;
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static java.math.BigDecimal.valueOf;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LaunchCallForFundsTest {
@@ -22,6 +25,8 @@ public class LaunchCallForFundsTest {
     private final InMemoryCallForFundsRepository callForFundsRepository = new InMemoryCallForFundsRepository();
 
     private final DeterministicDateProvider dateProvider = new DeterministicDateProvider();
+
+    private final PassiveCallForFundsVMPresenter callForFundsVMPresenter = new PassiveCallForFundsVMPresenter();
 
     private final UUID condominiumId = UUID.fromString("699915cd-056a-41e2-ba3d-cea478d4c0a2");
     private final UUID callForFundsId = UUID.fromString("cdef8cc9-0fcd-42ca-b9c9-caff3acd61a5");
@@ -53,6 +58,18 @@ public class LaunchCallForFundsTest {
             _assertCallForFundsLaunched(5000, 2);
         }
 
+        @Test
+        void shouldPresentTheLaunchedCallForFunds() {
+            declareExistingCondominium(10000);
+            simulateCurrentDate(2020, 1);
+            launchCallForFunds(callForFundsId, condominiumId);
+            assertThat(callForFundsVMPresenter.getId()).isEqualTo(callForFundsId);
+            assertThat(callForFundsVMPresenter.getCondominiumId()).isEqualTo(condominiumId);
+            assertThat(callForFundsVMPresenter.getAmount()).isEqualTo( valueOf(2500));
+            assertThat(callForFundsVMPresenter.getQuarter()).isEqualTo(1);
+            assertThat(callForFundsVMPresenter.getQuarter()).isEqualTo(1);
+        }
+
     }
 
     private void assertCallForFundsLaunched(int fiscalYear,
@@ -73,13 +90,13 @@ public class LaunchCallForFundsTest {
     private void declareExistingCondominium(int yearlyBudget) {
         condominiumRepository.feedWith(new Condominium(
                 condominiumId,
-                BigDecimal.valueOf(yearlyBudget)
+                valueOf(yearlyBudget)
         ));
     }
 
     private void launchCallForFunds(UUID callForFundsId, UUID condominiumId) {
         new LaunchCallForFundsCommandHandler(condominiumRepository, callForFundsRepository, dateProvider)
-                .handle(callForFundsId, condominiumId);
+                .handle(callForFundsId, condominiumId, callForFundsVMPresenter);
     }
 
     private void _assertCallForFundsLaunched(int amount, int quarter) {
@@ -88,10 +105,49 @@ public class LaunchCallForFundsTest {
                 new CallForFunds.CallForFundsStateSnapshot(
                         callForFundsId,
                         condominiumId,
-                        BigDecimal.valueOf(amount),
+                        valueOf(amount),
                         quarter,
                         dateProvider.timeNow()
                 ));
     }
+
+    private static class PassiveCallForFundsVMPresenter implements CallForFundsVMPresenter {
+
+        private UUID id;
+        private UUID condominiumId;
+        private BigDecimal amount;
+        private int quarter;
+        private LocalDateTime occurredOn;
+
+        @Override
+        public void setCallForFunds(UUID id, UUID condominiumId, BigDecimal amount, int quarter, LocalDateTime occurredOn) {
+            this.id = id;
+            this.condominiumId = condominiumId;
+            this.amount = amount;
+            this.quarter = quarter;
+            this.occurredOn = occurredOn;
+        }
+
+        public UUID getId() {
+            return id;
+        }
+
+        public UUID getCondominiumId() {
+            return condominiumId;
+        }
+
+        public BigDecimal getAmount() {
+            return amount;
+        }
+
+        public int getQuarter() {
+            return quarter;
+        }
+
+        public LocalDateTime getOccurredOn() {
+            return occurredOn;
+        }
+    }
+
 }
 

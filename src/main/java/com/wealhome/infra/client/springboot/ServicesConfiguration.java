@@ -17,7 +17,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @ComponentScan(basePackages = "com.wealhome")
-@EntityScan("com.wealhome.businesslogic.models")
+@EntityScan("com.wealhome.infra.repositories.jpa.jpaentities")
 @EnableJpaRepositories("com.wealhome.infra.repositories")
 public class ServicesConfiguration {
 

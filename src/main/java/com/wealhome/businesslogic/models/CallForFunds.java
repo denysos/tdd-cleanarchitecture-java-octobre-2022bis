@@ -1,18 +1,13 @@
 package com.wealhome.businesslogic.models;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
-@Entity
-@Table(name = "calls_for_funds")
+
 public class CallForFunds {
 
-    @Id
     private UUID id;
     private UUID condominiumId;
     private BigDecimal amount;
@@ -28,9 +23,6 @@ public class CallForFunds {
         this.occurredOn = occurredOn;
     }
 
-    public CallForFunds() {
-    }
-
     public CallForFundsStateSnapshot takeSnapshot() {
         return new CallForFundsStateSnapshot(
                 id,
@@ -39,26 +31,6 @@ public class CallForFunds {
                 quarter,
                 occurredOn
         );
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public UUID getCondominiumId() {
-        return condominiumId;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public int getQuarter() {
-        return quarter;
-    }
-
-    public LocalDateTime getOccurredOn() {
-        return occurredOn;
     }
 
     public static class CallForFundsStateSnapshot {

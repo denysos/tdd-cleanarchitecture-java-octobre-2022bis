@@ -5,7 +5,6 @@ import com.wealhome.businesslogic.models.DateProvider;
 import com.wealhome.businesslogic.repositories.CallForFundsRepository;
 import com.wealhome.businesslogic.repositories.CondominiumRepository;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public class LaunchCallForFundsCommandHandler {
@@ -23,7 +22,7 @@ public class LaunchCallForFundsCommandHandler {
         this.dateProvider = dateProvider;
     }
 
-    public void handle(UUID callForFundsId, UUID condominiumId) {
+    public void handle(UUID callForFundsId, UUID condominiumId, CallForFundsVMPresenter presenter) {
         condominiumRepository.findById(condominiumId).ifPresent(condominium -> {
             boolean doSomePastCallForFundsExist = callForFundsRepository.doSomePastCallForFundsExist();
             CallForFunds callForFunds = condominium.determineNextCallForFunds(
@@ -31,6 +30,14 @@ public class LaunchCallForFundsCommandHandler {
                     doSomePastCallForFundsExist,
                     dateProvider.timeNow());
             callForFundsRepository.save(callForFunds);
+            CallForFunds.CallForFundsStateSnapshot callForFundsStateSnapshot = callForFunds.takeSnapshot();
+            presenter.setCallForFunds(
+                    callForFundsStateSnapshot.id,
+                    callForFundsStateSnapshot.condominiumId,
+                    callForFundsStateSnapshot.amount,
+                    callForFundsStateSnapshot.quarter,
+                    callForFundsStateSnapshot.occurredOn
+            );
         });
 
     }
