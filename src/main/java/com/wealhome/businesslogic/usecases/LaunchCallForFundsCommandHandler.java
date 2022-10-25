@@ -24,19 +24,10 @@ public class LaunchCallForFundsCommandHandler {
 
     public void handle(UUID callForFundsId, UUID condominiumId) {
         condominiumRepository.findById(condominiumId).ifPresent(condominium -> {
-            callForFundsRepository.save(new CallForFunds(
-                    callForFundsId,
-                    condominiumId,
-                    condominium.computeCallForFundAmount(),
-                    determineCurrentQuarter(),
-                    dateProvider.timeNow()));
+            CallForFunds callForFunds = condominium.determineNextCallForFunds(callForFundsId, dateProvider.timeNow());
+            callForFundsRepository.save(callForFunds);
         });
 
-    }
-
-    private int determineCurrentQuarter() {
-        int currentMonth = dateProvider.dateNow().getMonth().getValue();
-        return (currentMonth - 1) / 3 + 1;
     }
 
 }

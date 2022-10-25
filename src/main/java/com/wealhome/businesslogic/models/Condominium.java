@@ -5,6 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static java.math.BigDecimal.valueOf;
@@ -23,6 +24,15 @@ public class Condominium {
     }
 
     public Condominium() {
+    }
+
+    public CallForFunds determineNextCallForFunds(UUID callForFundsId, LocalDateTime currentDateTime) {
+        return new CallForFunds(
+                callForFundsId,
+                this.id,
+                this.computeCallForFundAmount(),
+                currentDateTime);
+
     }
 
     public BigDecimal computeCallForFundAmount() {

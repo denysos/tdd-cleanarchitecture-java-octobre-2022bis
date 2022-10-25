@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -73,14 +74,14 @@ public class LaunchCallForFundsTest {
     }
 
     private void _assertCallForFundsLaunched(int amount, int quarter) {
-        assertThat(callForFundsRepository.getCallsForFunds()).containsExactly(
-                new CallForFunds(
+        assertThat(callForFundsRepository.getCallsForFunds().stream().map(CallForFunds::takeSnapshot)
+                .collect(Collectors.toList())).containsExactly(
+                new CallForFunds.CallForFundsStateSnapshot(
                         callForFundsId,
                         condominiumId,
                         BigDecimal.valueOf(amount),
                         quarter,
                         dateProvider.timeNow()
-                )
-        );
+                ));
     }
 }
