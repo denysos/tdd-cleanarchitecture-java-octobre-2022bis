@@ -1,9 +1,7 @@
 package com.wealhome.infra.client.springboot.controllers;
 
-import com.wealhome.businesslogic.repositories.CallForFundsRepository;
 import com.wealhome.businesslogic.usecases.LaunchCallForFundsCommandHandler;
 import com.wealhome.infra.client.springboot.viewmodels.CallForFundsVM;
-import com.wealhome.businesslogic.usecases.CallForFundsVMPresenter;
 import com.wealhome.infra.client.springboot.viewmodels.VerboseCallForFundsVMPresenter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +16,9 @@ import java.util.UUID;
 public class CallForFundsController {
 
     private final LaunchCallForFundsCommandHandler launchCallForFundsCommandHandler;
-    private final CallForFundsRepository callForFundsRepository;
 
-    public CallForFundsController(CallForFundsRepository callForFundsRepository,
-                                  LaunchCallForFundsCommandHandler launchCallForFundsCommandHandler) {
+    public CallForFundsController(LaunchCallForFundsCommandHandler launchCallForFundsCommandHandler) {
         this.launchCallForFundsCommandHandler = launchCallForFundsCommandHandler;
-        this.callForFundsRepository = callForFundsRepository;
     }
 
     @PostMapping(path = "/condominiums/{condominiumId}/callsforfunds/{callForFundsId}", consumes = "application/json",

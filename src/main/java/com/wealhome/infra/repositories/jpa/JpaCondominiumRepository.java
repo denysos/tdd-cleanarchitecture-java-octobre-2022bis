@@ -16,7 +16,11 @@ public class JpaCondominiumRepository implements CondominiumRepository {
 
     @Override
     public Optional<Condominium> findById(UUID condominiumId) {
-        return springCondominiumRepository.findById(condominiumId).map(c ->
-                Condominium.fromSnapshot(c.getId(), c.getYearlyBudget()));
+        return springCondominiumRepository.findById(condominiumId)
+                .map(c -> Condominium.fromSnapshot(c.getId(), c.getYearlyBudget()));
+    }
+
+    public SpringCondominiumRepository getSpringCondominiumRepository() {
+        return springCondominiumRepository;
     }
 }

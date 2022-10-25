@@ -2,6 +2,7 @@ package com.wealhome.infra.client.springboot;
 
 import com.wealhome.businesslogic.models.DateProvider;
 import com.wealhome.businesslogic.models.DeterministicDateProvider;
+import com.wealhome.businesslogic.models.RealDateProvider;
 import com.wealhome.businesslogic.repositories.CallForFundsRepository;
 import com.wealhome.businesslogic.repositories.CondominiumRepository;
 import com.wealhome.infra.repositories.jpa.JpaCallForFundsRepository;
@@ -13,7 +14,9 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.test.context.ActiveProfiles;
 
 @Configuration
 @ComponentScan(basePackages = "com.wealhome")
@@ -39,7 +42,14 @@ public class ServicesConfiguration {
     }
 
     @Bean
+    @Profile("prod")
     public DateProvider dateProvider() {
+        return new RealDateProvider();
+    }
+
+    @Bean
+    @Profile("e2e")
+    public DateProvider deterministicDateProvider() {
         return new DeterministicDateProvider();
     }
 

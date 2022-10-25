@@ -3,6 +3,7 @@ package com.wealhome.businesslogic.models;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 import static java.math.BigDecimal.valueOf;
@@ -19,6 +20,13 @@ public class Condominium {
 
     public static Condominium fromSnapshot(UUID id, BigDecimal yearlyBudget) {
         return new Condominium(id, yearlyBudget);
+    }
+
+    public CondominiumStateSnapshot takeSnapshot() {
+        return new CondominiumStateSnapshot(
+                this.id,
+                this.yearlyBudget
+        );
     }
 
     public CallForFunds determineNextCallForFunds(UUID callForFundsId, boolean doSomePastCallForFundsExist, LocalDateTime currentDateTime) {
@@ -55,6 +63,19 @@ public class Condominium {
         public CondominiumStateSnapshot(UUID id, BigDecimal yearlyBudget) {
             this.id = id;
             this.yearlyBudget = yearlyBudget;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            CondominiumStateSnapshot that = (CondominiumStateSnapshot) o;
+            return Objects.equals(id, that.id) && Objects.equals(yearlyBudget, that.yearlyBudget);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, yearlyBudget);
         }
     }
 

@@ -1,12 +1,12 @@
 package com.wealhome.e2e;
 
-import com.wealhome.businesslogic.models.Condominium;
 import com.wealhome.businesslogic.models.DateProvider;
 import com.wealhome.businesslogic.models.DeterministicDateProvider;
 import com.wealhome.infra.repositories.jpa.SpringCondominiumRepository;
 import com.wealhome.infra.repositories.jpa.jpaentities.CondominiumJpaEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,6 +28,7 @@ public class CallForFundsControllerIT extends BaseE2E {
     private SpringCondominiumRepository condominiumRepository;
 
     @Autowired
+    @Qualifier("deterministicDateProvider")
     private DateProvider dateProvider;
 
     @Test
