@@ -6,6 +6,7 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import static java.math.BigDecimal.valueOf;
@@ -26,21 +27,30 @@ public class Condominium {
     public Condominium() {
     }
 
-    public CallForFunds determineNextCallForFunds(UUID callForFundsId, LocalDateTime currentDateTime) {
+    public CallForFunds determineNextCallForFunds(UUID callForFundsId, boolean doSomePastCallForFundsExist, LocalDateTime currentDateTime) {
+        int currentQuarter = determineCurrentQuarter(currentDateTime);
         return new CallForFunds(
                 callForFundsId,
                 this.id,
-                this.computeCallForFundAmount(),
+                computeCallForFundAmount(doSomePastCallForFundsExist, currentQuarter),
+                currentQuarter,
                 currentDateTime);
-
-    }
-
-    public BigDecimal computeCallForFundAmount() {
-        return yearlyBudget.divide(valueOf(4), RoundingMode.CEILING);
     }
 
     public UUID getId() {
         return id;
+    }
+
+    private int determineCurrentQuarter(LocalDateTime currentDateTime) {
+        int currentMonth = currentDateTime.toLocalDate().getMonth().getValue();
+        return (currentMonth - 1) / 3 + 1;
+    }
+
+    private BigDecimal computeCallForFundAmount(boolean doSomePastCallForFundsExist, int currentQuarter) {
+        BigDecimal classicalAmount = yearlyBudget.divide(valueOf(4), RoundingMode.CEILING);
+        if (doSomePastCallForFundsExist || currentQuarter == 1)
+            return classicalAmount;
+        return classicalAmount.multiply(valueOf(2));
     }
 
 }

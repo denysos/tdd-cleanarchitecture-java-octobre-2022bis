@@ -20,28 +20,15 @@ public class CallForFunds {
 
     private LocalDateTime occurredOn;
 
-    public CallForFunds(UUID id, UUID condominiumId, BigDecimal amount, LocalDateTime occurredOn) {
+    public CallForFunds(UUID id, UUID condominiumId, BigDecimal amount, int quarter, LocalDateTime occurredOn) {
         this.id = id;
         this.condominiumId = condominiumId;
         this.amount = amount;
-        this.quarter = determineCurrentQuarter(occurredOn);
+        this.quarter = quarter;
         this.occurredOn = occurredOn;
     }
 
     public CallForFunds() {
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CallForFunds that = (CallForFunds) o;
-        return quarter == that.quarter && Objects.equals(id, that.id) && Objects.equals(condominiumId, that.condominiumId) && Objects.equals(amount, that.amount) && Objects.equals(occurredOn, that.occurredOn);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, condominiumId, amount, quarter, occurredOn);
     }
 
     public CallForFundsStateSnapshot takeSnapshot() {
@@ -74,11 +61,6 @@ public class CallForFunds {
         return occurredOn;
     }
 
-    private int determineCurrentQuarter(LocalDateTime currentDateTime) {
-        int currentMonth = currentDateTime.toLocalDate().getMonth().getValue();
-        return (currentMonth - 1) / 3 + 1;
-    }
-
     public static class CallForFundsStateSnapshot {
 
         public UUID id;
@@ -106,6 +88,17 @@ public class CallForFunds {
         @Override
         public int hashCode() {
             return Objects.hash(id, condominiumId, amount, quarter, occurredOn);
+        }
+
+        @Override
+        public String toString() {
+            return "CallForFundsStateSnapshot{" +
+                    "id=" + id +
+                    ", condominiumId=" + condominiumId +
+                    ", amount=" + amount +
+                    ", quarter=" + quarter +
+                    ", occurredOn=" + occurredOn +
+                    '}';
         }
     }
 }

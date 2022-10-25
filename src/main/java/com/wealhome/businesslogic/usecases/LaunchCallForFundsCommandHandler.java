@@ -5,6 +5,7 @@ import com.wealhome.businesslogic.models.DateProvider;
 import com.wealhome.businesslogic.repositories.CallForFundsRepository;
 import com.wealhome.businesslogic.repositories.CondominiumRepository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public class LaunchCallForFundsCommandHandler {
@@ -24,7 +25,11 @@ public class LaunchCallForFundsCommandHandler {
 
     public void handle(UUID callForFundsId, UUID condominiumId) {
         condominiumRepository.findById(condominiumId).ifPresent(condominium -> {
-            CallForFunds callForFunds = condominium.determineNextCallForFunds(callForFundsId, dateProvider.timeNow());
+            boolean doSomePastCallForFundsExist = callForFundsRepository.doSomePastCallForFundsExist();
+            CallForFunds callForFunds = condominium.determineNextCallForFunds(
+                    callForFundsId,
+                    doSomePastCallForFundsExist,
+                    dateProvider.timeNow());
             callForFundsRepository.save(callForFunds);
         });
 

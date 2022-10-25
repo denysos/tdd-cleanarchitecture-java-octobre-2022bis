@@ -45,6 +45,14 @@ public class LaunchCallForFundsTest {
             assertCallForFundsLaunched(2020, 1, 2601, 1);
         }
 
+        @Test
+        void shouldCumulateTheBudgetOfMissedCallForFunds() {
+            declareExistingCondominium(10000);
+            simulateCurrentDate(2020, 4);
+            launchCallForFunds(callForFundsId, condominiumId);
+            _assertCallForFundsLaunched(5000, 2);
+        }
+
     }
 
     private void assertCallForFundsLaunched(int fiscalYear,
@@ -52,6 +60,7 @@ public class LaunchCallForFundsTest {
                                             int expectedAmount,
                                             int expectedQuarter) {
         callForFundsRepository.clear();
+        callForFundsRepository.setExistingPastCallForFunds();
         simulateCurrentDate(fiscalYear, currentMonth);
         launchCallForFunds(callForFundsId, condominiumId);
         _assertCallForFundsLaunched(expectedAmount, expectedQuarter);
@@ -85,3 +94,4 @@ public class LaunchCallForFundsTest {
                 ));
     }
 }
+
